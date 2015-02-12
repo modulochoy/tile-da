@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>tile-da!</title>
+    <link rel="stylesheet" type="text/css" href="styles/tile.css" media="screen" />
+    <script src="scripts/jquery-2.0.3.js"></script>
+    <script src="scripts/jquery-tmpl.js"></script>
+    <script src="scripts/jquery-ui/jquery-ui.js"></script>
+    <script src="scripts/jquery-tile-utils.js"></script>
+    <script src="scripts/tile-controller.js"></script>
+  </head>
+  <body>
+    <header>
+      why hello
+    </header>
+    <main id="tiles">
+      <div class='tile-box'>
+      </div>
+    </main>
+  </body>
+  <script>
+    $(document).ready(function() {
+    tileController.init($('#tiles'));
+    });
+  </script>
+  <script id="tileGrid" type="text/x-jQuery-tmpl">
+    <div class="tile-grid">${gridNum}</div>
+  </script>
+  <script id="tile" type="text/x-jQuery-tmpl">
+    <div class="tile">DRAGME</div>
+  </script>
+</html>
