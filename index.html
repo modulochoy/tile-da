@@ -15,8 +15,8 @@
       why hello
     </header>
     <main id="tiles">
-      <div class='tile-box'>
-      </div>
+      <div class="tile-box"></div>
+      <div class="tile-drag"></div>
     </main>
   </body>
   <script>
@@ -25,9 +25,9 @@
     });
   </script>
   <script id="tileGrid" type="text/x-jQuery-tmpl">
-    <div class="tile-grid">${gridNum}</div>
+    <div class="tile-grid" gridnum=${gridnum}>${gridnum}</div>
   </script>
   <script id="tile" type="text/x-jQuery-tmpl">
-    <div class="tile">DRAGME</div>
+    <div class="tile" ongrid=${ongrid}>${tileText}</div>
   </script>
 </html>
