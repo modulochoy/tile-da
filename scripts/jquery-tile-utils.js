@@ -102,6 +102,7 @@
 	    }
 	    return adjacent;
 	},
+	//TODO: IMPLEMENT SWAP for swapping tile ongrid tracking
 	/*
 	 * swap items in array
 	 * mutates arr
@@ -110,6 +111,32 @@
 	    var tmp = arr[a];
 	    arr[a] = arr[b];
 	    arr[b] = tmp;
+	},
+	getEmptyTile: function(arr) {
+	    var empty;
+	    for(var i = 0; i < arr.length; i++) {
+		if(!arr[i]) {
+		    empty = i;
+		    break;
+		}
+	    }
+	    return empty;
+	},
+	displayTiles: function(arr) {
+	    var size = Math.sqrt(arr.length);
+	    var str = '';
+	    for(var i = 0; i < arr.length; i++) {
+		if(arr[i]) {
+		    var onGrid = $(arr[i]).attr('ongrid');
+		    str += '['+onGrid+']';
+		} else {
+		    str += '[x]';
+		}
+		if(parseInt(i+1) % size == 0) {
+		    console.log('row '+Math.ceil(i/size)+' '+str);
+		    str = '';
+		}
+	    }
 	}
     });
 })(jQuery);

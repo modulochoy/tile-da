@@ -8,6 +8,7 @@ tileController = function() {
 	    if(!inited) {
 		inited = true;
 		var tileWrapper = wrapper;
+		var tileFns = [];
 		var tiles = [];
 		
 		//set up grid
@@ -21,13 +22,14 @@ tileController = function() {
 		    //TODO: add grid to grids array here
 		}
 		//set up tiles
-		for(var i = 1; i < (GRID_SIZE*GRID_SIZE); i++) {
+		for(var i = 0; i < (GRID_SIZE*GRID_SIZE); i++) {
 		    var tileObj = {'ongrid':i, 'tileText':"i am tile "+i};
-		    var tile = $('#tile').tmpl(tileObj).appendTo($(tileWrapper).find('.tile-box'));
+		    var tile = $('#tile').tmpl(tileObj).appendTo($(tileWrapper).find('.tile-drag'));
 		    tile.gridMoveTo(parseInt(i/GRID_SIZE), i%GRID_SIZE, GRID_SIZE, GRID_WIDTH);
+		    tileFns[i] = tile;
 		    tiles[i] = tile[0];
 		}
-		var firstTile = $('#tile').tmpl({'tileText':"DRAG ME"}).appendTo($(tileWrapper).find('.tile-drag'));
+		//var firstTile = $('#tile').tmpl({'tileText':"DRAG ME"}).appendTo($(tileWrapper).find('.tile-drag'));
 		//TODO?: refactor init of sizing
 		var tileBox = $(tileWrapper).find('.tile-box');
 		var tileDrag = $(tileWrapper).find('.tile-drag');
@@ -43,19 +45,28 @@ tileController = function() {
 		$('.tile-grid').css({'width':GRID_WIDTH, 'height':GRID_WIDTH, 'line-height':GRID_WIDTH+'px'});
 		grid = $(tileWrapper).find('.tile-grid');
 		
-		var gridOverlaps = firstTile.filterCollide(grid);
+		var gridOverlaps = [];//firstTile.filterCollide(grid);
 		var tileOverlaps = [];
-		var prevGrid = gridOverlaps[0].object;
+		var prevGrid;// = gridOverlaps[0].object;		
+		var dragTile;
+		var onGrid;
+		//TODO: mutex lock to prevent dragging other things when tiles are still moving to correct location
+		
 
-		firstTile.draggable({
+		$(tileFns).draggable({		    
 		    start:function() {
+			dragTile = this;
+			onGrid = $(this).attr('ongrid');
+			tiles[onGrid] = null;
+			console.log('START: '+onGrid);
+			$(this).css('z-index',1000);
 			if(gridOverlaps.length > 0) {
 			    prevGrid = gridOverlaps[0].object;
 			}
 		    },
 		    drag:function() {
 			var gridNum;
-			gridOverlaps = firstTile.filterCollide(grid);
+			gridOverlaps = $(this).filterCollide(grid);
 			grid.removeClass('tile-hover');
 			tiles.forEach(function(tile) {
 			    $(tile).removeClass('tile-bullied');
@@ -68,7 +79,6 @@ tileController = function() {
 			    if(tiles[gridNum]) {
 				var currTile = tiles[gridNum];
 				$(currTile).addClass('tile-bullied');
-				//move me
 				//tell me which adjacent grids are open
 				var adjacentGrids = $(currTile).adjacentGrids(GRID_SIZE);
 				var availableGrids = adjacentGrids.filter(function(i) {
@@ -84,30 +94,28 @@ tileController = function() {
 				    $(currTile).attr('ongrid', availGrid);
 				    $().swap(gridNum, availGrid, tiles);
 				    $(currTile).removeClass('tile-bullied');
-				    
+				    $().displayTiles(tiles);
+				    //console.log(tiles);
 				}
 			    }
 			}
-			/*
-			if(tileOverlaps.length > 1) {
-			    var percentOverlap = (tileOverlaps[1].overlap/(GRID_WIDTH*GRID_WIDTH))*100;
-			    if(percentOverlap > PERCENT_OVERLAP_PUSH) {
-				var bulliedTile = tileOverlaps[1].object;
-				$(bulliedTile).addClass('tile-bullied');
-				//move bulliedTile here
-			    }
-			}
-			*/
 		    },
 		    stop:function() {
-			gridOverlaps = firstTile.filterCollide(grid);
+			gridOverlaps = $(this).filterCollide(grid);
 			grid.removeClass('tile-hover');
+			console.log(tiles);
+			var empty = $().getEmptyTile(tiles);
+			tiles[empty] = this;
+			console.log(tiles);
 			if(gridOverlaps.length > 0) {
 			    var bestGrid = gridOverlaps[0].object;
-			    firstTile.goToMid($(bestGrid));
+			    $(this).goToMid($(bestGrid));
 			} else {
-			    firstTile.goToMid($(prevGrid));
+			    //TODO: change this to move to empty spot
+			    $(this).goToMid($(prevGrid));
 			}
+			console.log($(this).attr('ongrid'));
+			$(this).css('z-index', $(this).attr('ongrid'));
 		    }
 		});
 
