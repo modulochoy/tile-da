@@ -44,6 +44,9 @@ tileController = function() {
 			count++;
 			if(count >= numMixes) {
 			    clearInterval(mixLoop);
+			    setTimeout(function() {
+				$('#header').html("ok ready! :&#41");
+			    }, 1000);
 			}
 		    }, 1000);
 		}, 1000);
