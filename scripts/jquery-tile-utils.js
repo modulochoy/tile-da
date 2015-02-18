@@ -54,15 +54,14 @@
 		objBounds.bottom = objBounds.top+$(obj).outerHeight();
 		
 		if(!(objBounds.right < thisBounds.left ||
-		   objBounds.left > thisBounds.right ||
-		   objBounds.bottom < thisBounds.top ||
-		   objBounds.top > thisBounds.bottom)) {
+		     objBounds.left > thisBounds.right ||
+		     objBounds.bottom < thisBounds.top ||
+		     objBounds.top > thisBounds.bottom)) {
 		    
 		    var xOverlap = objBounds.left < thisBounds.left ? Math.abs(objBounds.right - thisBounds.left) : Math.abs(objBounds.left - thisBounds.right);
 		    var yOverlap = objBounds.top < thisBounds.top ? Math.abs(objBounds.bottom - thisBounds.top) : Math.abs(objBounds.top - thisBounds.bottom);
-		    
-		    var onGrid = $(obj).attr('ongrid');		    
-		    var pushItem = {'object':obj, 'overlap':xOverlap*yOverlap, 'ongrid':onGrid};
+		    var gridNum = $(obj).attr('gridnum');
+		    var pushItem = {'object':obj, 'overlap':xOverlap*yOverlap, 'gridnum':gridNum};
 		    items.push(pushItem);
 		    items.sort(compareOverlap);
 		    items.reverse();
@@ -103,11 +102,18 @@
 	    return adjacent;
 	},
 	//TODO: IMPLEMENT SWAP for swapping tile ongrid tracking
+	swapTiles: function(pusher, pushee) {
+	    var tmp = this[pusher];
+	    this[pusher] = this[pushee];
+	    this[pushee] = tmp;
+	},
 	/*
 	 * swap items in array
 	 * mutates arr
 	 */
 	swap: function(a, b, arr) {
+	    //var retArr = arr;
+	    console.log('swapping: '+a+', '+b);
 	    var tmp = arr[a];
 	    arr[a] = arr[b];
 	    arr[b] = tmp;
@@ -127,7 +133,7 @@
 	    var str = '';
 	    for(var i = 0; i < arr.length; i++) {
 		if(arr[i]) {
-		    var onGrid = $(arr[i]).attr('ongrid');
+		    var onGrid = $(arr[i]).attr('name');
 		    str += '['+onGrid+']';
 		} else {
 		    str += '[x]';
