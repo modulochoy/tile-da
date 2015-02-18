@@ -3,6 +3,7 @@ tileController = function() {
     var GRID_SIZE = 3;
     var GRID_WIDTH = 250;
     var PERCENT_OVERLAP_PUSH = 30;
+    var IMAGE_PATH = "images/donut_";
     return {
 	init : function(wrapper) {
 	    if(!inited) {
@@ -23,12 +24,15 @@ tileController = function() {
 		}
 		//set up tiles
 		for(var i = 0; i < (GRID_SIZE*GRID_SIZE); i++) {
-		    var tileObj = {'name':i, 'ongrid':i, 'tileText':"i am tile "+i};
+		    var tileObj = {'name':i, 'ongrid':i, 'imgPath':IMAGE_PATH+i+'.png'};
 		    var tile = $('#tile').tmpl(tileObj).appendTo($(tileWrapper).find('.tile-drag'));
 		    tile.gridMoveTo(parseInt(i/GRID_SIZE), i%GRID_SIZE, GRID_SIZE, GRID_WIDTH);
 		    tileFns[i] = tile;
 		    tiles[i] = tile[0];
 		}
+		//mix up tiles
+		
+
 		//var firstTile = $('#tile').tmpl({'tileText':"DRAG ME"}).appendTo($(tileWrapper).find('.tile-drag'));
 		//TODO?: refactor init of sizing
 		var tileBox = $(tileWrapper).find('.tile-box');
