@@ -32,9 +32,21 @@ tileController = function() {
 		}
 		//mix up tiles
 		setTimeout(function() {
-		    console.log("MIXER");
-		    $().swapTiles(1, 2, tiles, GRID_WIDTH);
-		}, 2000);
+		    var numMixes = 10;
+		    var count = 0;
+		    var mixLoop = setInterval(function() {
+			var a = Math.floor(Math.random()*(GRID_SIZE*GRID_SIZE));
+			var b = a;
+			while(b == a) {
+			    b = Math.floor(Math.random()*(GRID_SIZE*GRID_SIZE));
+			}
+			$().swapTiles(a, b, tiles, GRID_WIDTH);
+			count++;
+			if(count >= numMixes) {
+			    clearInterval(mixLoop);
+			}
+		    }, 1000);
+		}, 1000);
 
 		//var firstTile = $('#tile').tmpl({'tileText':"DRAG ME"}).appendTo($(tileWrapper).find('.tile-drag'));
 		//TODO?: refactor init of sizing

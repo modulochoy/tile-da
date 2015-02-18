@@ -105,16 +105,16 @@
 	 * swaps tiles w/o user drag
 	 */
 	swapTiles: function(a, b, arr, gridWidth) {
-	    var gridSize = arr.length;
+	    var gridSize = Math.floor(Math.sqrt(arr.length));
 	    var tileA = arr[a];
 	    var tileB = arr[b];
 	    var rowA = Math.floor(a / gridSize);
-	    var colA = a % Math.floor(Math.sqrt(arr.length));
+	    var colA = a % gridSize;
 	    var rowB = Math.floor(b / gridSize);
-	    var colB = b % Math.floor(Math.sqrt(arr.length));
+	    var colB = b % gridSize;
 	    console.log('colA: '+colA+' colB: '+colB);
-	    $(tileA).gridMoveTo(rowB, colB, gridSize, gridWidth);
-	    $(tileB).gridMoveTo(rowA, colA, gridSize, gridWidth);
+	    $(tileA).gridMoveTo(rowB, colB, arr.length, gridWidth);
+	    $(tileB).gridMoveTo(rowA, colA, arr.length, gridWidth);
 	    $(tileA).attr('ongrid', b);
 	    $(tileB).attr('ongrid', a);
 	    $().swap(a, b, arr);
