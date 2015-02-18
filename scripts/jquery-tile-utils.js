@@ -112,7 +112,6 @@
 	    var colA = a % gridSize;
 	    var rowB = Math.floor(b / gridSize);
 	    var colB = b % gridSize;
-	    console.log('colA: '+colA+' colB: '+colB);
 	    $(tileA).gridMoveTo(rowB, colB, arr.length, gridWidth);
 	    $(tileB).gridMoveTo(rowA, colA, arr.length, gridWidth);
 	    $(tileA).attr('ongrid', b);

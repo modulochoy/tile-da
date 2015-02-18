@@ -60,6 +60,7 @@ tileController = function() {
 		
 		//TODO?: this is part of the refactoring of init sizing
 		var fontSize = parseInt(GRID_WIDTH/8);
+		$('header').css({'width':GRID_WIDTH*GRID_SIZE});
 		$('.tile').css({'width':GRID_WIDTH, 'height':GRID_WIDTH, 'line-height':GRID_WIDTH+'px'});
 		$('.tile-grid').css({'width':GRID_WIDTH, 'height':GRID_WIDTH, 'line-height':GRID_WIDTH+'px'});
 		grid = $(tileWrapper).find('.tile-grid');
