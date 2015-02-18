@@ -31,7 +31,10 @@ tileController = function() {
 		    tiles[i] = tile[0];
 		}
 		//mix up tiles
-		
+		setTimeout(function() {
+		    console.log("MIXER");
+		    $().swapTiles(1, 2, tiles, GRID_WIDTH);
+		}, 2000);
 
 		//var firstTile = $('#tile').tmpl({'tileText':"DRAG ME"}).appendTo($(tileWrapper).find('.tile-drag'));
 		//TODO?: refactor init of sizing
@@ -96,7 +99,6 @@ tileController = function() {
 				    var availGrid = parseInt(availableGrids[0]);
 				    var row = Math.floor(availGrid / GRID_SIZE);
 				    var col = availGrid % GRID_SIZE;
-				    //TODO: refactor to combine gridMoveTo and change onGrid attribute AND tile attribute updates
 				    $(bulliedTile).gridMoveTo(row, col, GRID_SIZE, GRID_WIDTH);
 				    $(this).attr('ongrid', gridNum);
 				    $(bulliedTile).attr('ongrid', availGrid);
@@ -127,12 +129,6 @@ tileController = function() {
 			$(this).css('z-index', $(this).attr('ongrid'));
 		    }
 		});
-
-		/*
-		tiles.click(function(evt) {
-		    $(evt.target).toggleClass('tile-select');
-		});
-		*/
 	    }
 	}
     };

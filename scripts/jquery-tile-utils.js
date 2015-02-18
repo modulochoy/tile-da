@@ -72,7 +72,7 @@
 	/*
 	 * animate obj to a given cell in grid, assumes square sized cells
 	 */
-	gridMoveTo: function(row, col, gridSize, gridWidth) {	
+	gridMoveTo: function(row, col, gridSize, gridWidth) {
 	    $(this).animate({
 		'top' : row*gridWidth+'px',
 		'left' : col*gridWidth+'px'			
@@ -101,11 +101,23 @@
 	    }
 	    return adjacent;
 	},
-	//TODO: IMPLEMENT SWAP for swapping tile ongrid tracking
-	swapTiles: function(pusher, pushee) {
-	    var tmp = this[pusher];
-	    this[pusher] = this[pushee];
-	    this[pushee] = tmp;
+	/*
+	 * swaps tiles w/o user drag
+	 */
+	swapTiles: function(a, b, arr, gridWidth) {
+	    var gridSize = arr.length;
+	    var tileA = arr[a];
+	    var tileB = arr[b];
+	    var rowA = Math.floor(a / gridSize);
+	    var colA = a % Math.floor(Math.sqrt(arr.length));
+	    var rowB = Math.floor(b / gridSize);
+	    var colB = b % Math.floor(Math.sqrt(arr.length));
+	    console.log('colA: '+colA+' colB: '+colB);
+	    $(tileA).gridMoveTo(rowB, colB, gridSize, gridWidth);
+	    $(tileB).gridMoveTo(rowA, colA, gridSize, gridWidth);
+	    $(tileA).attr('ongrid', b);
+	    $(tileB).attr('ongrid', a);
+	    $().swap(a, b, arr);
 	},
 	/*
 	 * swap items in array
