@@ -144,8 +144,8 @@
 	    var str = '';
 	    for(var i = 0; i < arr.length; i++) {
 		if(arr[i]) {
-		    var onGrid = $(arr[i]).attr('name');
-		    str += '['+onGrid+']';
+		    var tileNum = $(arr[i]).attr('name');
+		    str += '['+tileNum+']';
 		} else {
 		    str += '[x]';
 		}
@@ -154,6 +154,19 @@
 		    str = '';
 		}
 	    }
+	},
+	puzzleCheck: function(arr) {
+	    var numCorrect = 0;
+	    for(var i = 0; i < arr.length; i++) {
+		var tileNum = $(arr[i]).attr('name');
+		if(parseInt(tileNum) === parseInt(i)) {
+		    numCorrect++;
+		}
+	    }
+	    return numCorrect;
+	},
+	setHeaderText: function(str) {
+	    $('#header').html(str);
 	}
     });
 })(jQuery);

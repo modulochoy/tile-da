@@ -2,7 +2,8 @@ tileController = function() {
     var inited = false;
     var GRID_SIZE = 3;
     var GRID_WIDTH = 250;
-    var PERCENT_OVERLAP_PUSH = 30;
+    var CLOSE_PERCENTAGE = 0.75;
+    var HALF_PERCENTAGE = 0.50;
     var IMAGE_PATH = "images/donut_";
     return {
 	init : function(wrapper) {
@@ -30,7 +31,9 @@ tileController = function() {
 		    tileFns[i] = tile;
 		    tiles[i] = tile[0];
 		}
-		//mix up tiles
+		//create blocking div to absorb user clicks
+		var blocker = $("<div class='tile-box'></div>").appendTo($(tileWrapper));
+		//mix up tiles		
 		setTimeout(function() {
 		    var numMixes = 10;
 		    var count = 0;
@@ -46,11 +49,12 @@ tileController = function() {
 			    clearInterval(mixLoop);
 			    setTimeout(function() {
 				$('#header').html("ok ready! :&#41");
+				blocker.remove();
 			    }, 1000);
 			}
 		    }, 1000);
 		}, 1000);
-
+		
 		//var firstTile = $('#tile').tmpl({'tileText':"DRAG ME"}).appendTo($(tileWrapper).find('.tile-drag'));
 		//TODO?: refactor init of sizing
 		var tileBox = $(tileWrapper).find('.tile-box');
@@ -129,9 +133,18 @@ tileController = function() {
 		    stop:function() {
 			gridOverlaps = $(this).filterCollide(grid);
 			grid.removeClass('tile-hover');
-			//var empty = $().getEmptyTile(tiles);
+			var numCorrect = $().puzzleCheck(tiles);
+			var percentageCorrect = numCorrect/tiles.length;
+			if(percentageCorrect >= HALF_PERCENTAGE && percentageCorrect < CLOSE_PERCENTAGE) {
+			    $().setHeaderText("halfway there...");
+			} else if(percentageCorrect >= CLOSE_PERCENTAGE && percentageCorrect < 1) {
+			    $().setHeaderText("almost there!");
+			} else if(percentageCorrect == 1) {
+			    $().setHeaderText("you got it!");
+			} else {
+			    $().setHeaderText("keep at it...");
+			}
 			
-			//tiles[empty] = this;
 			console.log("======");
 			$().displayTiles(tiles);
 			if(gridOverlaps.length > 0) {
@@ -141,7 +154,6 @@ tileController = function() {
 			    //TODO: change this to move to empty spot
 			    $(this).goToMid($(prevGrid));
 			}
-			console.log($(this).attr('ongrid'));
 			$(this).css('z-index', $(this).attr('ongrid'));
 		    }
 		});

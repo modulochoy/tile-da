@@ -1,8 +1,11 @@
 * BUGS
 ** FIXME sometimes the bottom left tile pops out
 * IN PROGRESS
-** TODO make all tiles draggable
+** DONE make all tiles draggable
 ** TODO REFACTOR tile-controller.js!!
 ** TODO refactor and split up tile-utils
 ** TODO make the default location of dragged tile the (newly) open spot instead of its old spot
+** DONE puzzle progress indicator
+** DONE REFACTOR: function to change text of header
+** DONE prevent dragging when tiles are shuffling at beginning
 * MAYBE FEATURES
